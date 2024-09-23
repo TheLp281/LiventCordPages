@@ -19,6 +19,21 @@
     </style>
 </head>
 <body>
-    <iframe src="https://liventcord.serveo.net" allowfullscreen></iframe>
+    <iframe id="myIframe" src="https://liventcord.serveo.net" allowfullscreen></iframe>
+    
+    <script>
+        const iframe = document.getElementById('myIframe');
+
+        iframe.onload = function() {
+            try {
+                // Attempt to access iframe content to check if it's the same origin
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                // If successful, do nothing
+            } catch (e) {
+                // If an error occurs, redirect to the original URL
+                window.location.href = iframe.src;
+            }
+        };
+    </script>
 </body>
 </html>
