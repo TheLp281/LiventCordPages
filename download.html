@@ -354,11 +354,179 @@
                 margin-top: 20px;
                 font-style: normal;
             }
+
+            #nierwallpaper {
+                position: fixed;
+                opacity: 0.8;
+                width: 100%;
+                height: 100vh;
+                object-fit: cover;
+                top: 0;
+                left: 0;
+                display: block;
+            }
+            
+
+            .spherepop {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 25px;
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            z-index: 5;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-size: 400% 400%;
+            color: #23D5AB;
+            animation: Gradient 15s infinite steps(75);
+            }
+            
+            #newbutton {
+                background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+                top: 100px;
+                left: 50px;
+            }
+            
+            #nierbutton {
+                background: linear-gradient(-45deg, #23A6D5, #23D5AB, #EE7752, #E73C7E);
+                top: 250px;
+                left: 50px;
+            }
+            
+            @keyframes Gradient {
+                0% {
+                background-position: 0% 50%
+                }
+                50% {
+                background-position: 100% 50%
+                }
+                100% {
+                background-position: 0% 50%
+                }
+            }
+            
+            .spark {
+                z-index: 1;
+                pointer-events: none;
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background-color: yellow;
+                clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                animation: spark 1s infinite;
+            }
+            
+            @keyframes spark {
+                0% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                50% {
+                    opacity: 0.5;
+                    transform: scale(1.5);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+            }
         </style>
     </head>
 
 
-    <img id="nierwallpaper" src="/static/images/nierwallpaper.jpg">
+    <button class="spherepop" id="nierbutton" onclick="setNier()">Nier!</button>        
+  
+    <img id="nierwallpaper" style="display: none;">
+    <script>
+      const nier = document.getElementById('nierwallpaper');
+  
+      const spherepops = document.querySelectorAll('.spherepop');
+  
+      function createSparkLoop() {
+          spherepops.forEach(spherepop => {
+              createSpark(spherepop);
+          });
+          setTimeout(createSparkLoop, 400);
+      }
+      
+      createSparkLoop();
+      
+      function createSpark(spherepop) {
+          const rect = spherepop.getBoundingClientRect();
+          const x = rect.left - 5 + Math.random() * rect.width;
+          const y = rect.top - 5 + Math.random() * rect.height + window.scrollY; // Adjust for scroll
+      
+          const spark = document.createElement('div');
+          spark.classList.add('spark');
+          spark.style.left = x + 'px';
+          spark.style.top = y + 'px';
+          spark.style.zIndex =  5;
+          document.body.appendChild(spark);
+      
+          setTimeout(() => {
+              spark.remove();
+          }, 1000);
+      }
+      
+      window.addEventListener('scroll', () => {
+          // Handle scroll event to update spark positions
+          const sparks = document.querySelectorAll('.spark');
+          sparks.forEach(spark => {
+              const rect = spark.getBoundingClientRect();
+              const newY = rect.top - 5 + window.scrollY;
+              spark.style.top = newY + 'px';
+          });
+      });
+      
+      
+  
+      function saveCookie(name, value) {
+          const days = 99;
+          let expires = "";
+          if (days) {
+              const date = new Date();
+              date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+              expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "") + expires + "; path=/";
+      }
+  
+      function loadCookie(name) {
+          const nameEQ = name + "=";
+          const ca = document.cookie.split(';');
+          for (let i = 0; i < ca.length; i++) {
+              let c = ca[i];
+              while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+              if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+          }
+          return null;
+      }
+  
+      let isNier = loadCookie('isNier') === 'true'; // Convert string to boolean
+  
+      function setNier() {
+          isNier = !isNier;
+          saveCookie('isNier', isNier);
+  
+          if (isNier) {
+              nier.src = 'https://raw.githubusercontent.com/TheLp281/LiventCordPages/refs/heads/main/static/images/nierwallpaper2.jpg';
+              nier.style.display = 'flex';
+          } else {
+              nier.style.display = 'none';
+              nier.removeAttribute('src');
+          }
+      }
+  
+      if (isNier) {
+          nier.src = 'https://github.com/TheLp281/LiventCord/blob/main/zsDUp0iW_o%20(1).png?raw=true';
+          nier.style.display = 'flex';
+      } else {
+          nier.style.display = 'none';
+      }
+  </script>
 
 
     
@@ -723,7 +891,7 @@
         <script>
             function fetchDomainStatus(successCallback, errorCallback) {
               const xhr = new XMLHttpRequest();
-              xhr.open('GET', 'https://app.liventcord.workers.dev/check_domains', true);  // Use GET request to fetch domain status
+              xhr.open('GET', 'https://app.liventcord.workers.dev/check_domains', true);
               xhr.onload = function () {
                 if (xhr.status === 200) {
                   const response = JSON.parse(xhr.responseText);
@@ -735,7 +903,7 @@
               xhr.onerror = function () {
                 errorCallback(new Error('Network error occurred.'));
               };
-              xhr.send();  // No parameters sent
+              xhr.send();
             }
           
             function updateStatus(linkId, statusId, isActive) {
