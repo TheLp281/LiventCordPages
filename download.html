@@ -723,7 +723,7 @@
         <script>
             function fetchDomainStatus(successCallback, errorCallback) {
               const xhr = new XMLHttpRequest();
-              xhr.open('GET', '/check_domains', true);  // Use GET request to fetch domain status
+              xhr.open('GET', 'https://app.liventcord.workers.dev/check_domains', true);  // Use GET request to fetch domain status
               xhr.onload = function () {
                 if (xhr.status === 200) {
                   const response = JSON.parse(xhr.responseText);
