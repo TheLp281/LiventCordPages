@@ -743,37 +743,46 @@
         <script src="https://discord.com/webflow-scripts/bodyEnd.js" defer async></script>
         <script type="text/javascript" src="https://raw.githubusercontent.com/TheLp281/LiventCordPages/refs/heads/main/static/loader.js" async defer></script>
         <script>
-
             let domain = window.location.hostname;
+
             function initDownloadButton() {
                 let userAgent = window.navigator.userAgent,
                     platform = window.navigator.platform,
                     windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"],
                     buttonAttributes = null;
-            
+
+                // Check for Windows platforms
                 if (windowsPlatforms.indexOf(platform) !== -1) {
                     buttonAttributes = {
                         text: "Download for Windows",
                         href: "/app.liventcord.workers.dev/download",
                     };
+                } else {
+                    // Define fallback attributes or handle other platforms if needed
+                    buttonAttributes = {
+                        text: "Download for Other Platforms",
+                        href: "/app.liventcord.workers.dev/download-other",
+                    };
                 }
-            
+
+                // Update download buttons
                 let downloadEl = document.querySelectorAll(".download-button");
-                if (downloadEl) {
+                if (downloadEl.length > 0 && buttonAttributes) {  // Check if elements exist
                     downloadEl.forEach(function(el) {
                         el.innerText = buttonAttributes.text;
                         el.href = buttonAttributes.href;
                     });
                 }
-            
+
+                // Update download sidebar links
                 let downloadSidebarEl = document.querySelectorAll(".download-sidebar");
-                if (downloadSidebarEl) {
+                if (downloadSidebarEl.length > 0 && buttonAttributes) {  // Check if elements exist
                     downloadSidebarEl.forEach(function(el) {
                         el.href = buttonAttributes.href;
                     });
                 }
             }
-            
+
 
             function initLogInOrOpenDiscordButton() {
                 let loginButtonText, loginRoute, signUpButtonText, signupRoute;
